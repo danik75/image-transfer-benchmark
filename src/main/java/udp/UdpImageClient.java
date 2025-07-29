@@ -8,9 +8,9 @@ import java.nio.file.Paths;
 
 public class UdpImageClient {
     public static long send(String imagePath) throws IOException {
-        final int port = 7001;
-        final int chunkSize = 20000;
-        final int headerSize = 4;
+        final int port = UdpImageConfig.PORT; // Use the port defined in UdpImageConfig
+        final int chunkSize = UdpImageConfig.CHUNK_SIZE;
+        final int headerSize = UdpImageConfig.HEADER_SIZE;
 
         InetAddress address = InetAddress.getByName("localhost");
         DatagramSocket socket = new DatagramSocket();

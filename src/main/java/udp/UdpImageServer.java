@@ -9,8 +9,8 @@ import java.util.TreeMap;
 
 public class UdpImageServer {
     public static void main(String[] args) throws Exception {
-        final int port = 7001;
-        final int bufferSize = 516; // 512 + 4 header bytes
+        final int port = UdpImageConfig.PORT;
+        final int bufferSize = UdpImageConfig.CHUNK_SIZE; // 512 + 4 header bytes
         DatagramSocket socket = new DatagramSocket(port);
 
         System.out.println("UDP Image Server listening on port " + port);

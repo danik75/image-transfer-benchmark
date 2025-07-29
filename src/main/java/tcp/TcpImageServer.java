@@ -5,7 +5,7 @@ import java.net.*;
 
 public class TcpImageServer {
     public static void main(String[] args) {
-        int port = 5001;
+        int port = TcpImageConfig.PORT;
 
         try (ServerSocket serverSocket = new ServerSocket(port)) {
             System.out.println("TCP Server is listening on port " + port);
@@ -19,7 +19,7 @@ public class TcpImageServer {
                     System.out.println("Accepted connection from " + socket.getInetAddress());
 
                     ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-                    byte[] data = new byte[1024];
+                    byte[] data = new byte[TcpImageConfig.BUFFER_SIZE];
                     int bytesRead;
                     while ((bytesRead = in.read(data)) != -1) {
                         buffer.write(data, 0, bytesRead);

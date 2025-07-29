@@ -11,12 +11,12 @@ public class GrpcImageClient {
     public static long send(String imagePath) throws IOException {
         MethodDescriptor<byte[], byte[]> method = MethodDescriptor.<byte[], byte[]>newBuilder()
                 .setType(MethodDescriptor.MethodType.UNARY)
-                .setFullMethodName(MethodDescriptor.generateFullMethodName("ImageService", "SendImage"))
+                .setFullMethodName(MethodDescriptor.generateFullMethodName(GrcpImageConfig.SERVICE_NAME, GrcpImageConfig.METHOD_NAME))
                 .setRequestMarshaller(new ByteArrayMarshaller())
                 .setResponseMarshaller(new ByteArrayMarshaller())
                 .build();
 
-        ManagedChannel channel = Grpc.newChannelBuilder("localhost:6000", InsecureChannelCredentials.create()).build();
+        ManagedChannel channel = Grpc.newChannelBuilder(GrcpImageConfig.TARGET + ":" + GrcpImageConfig.PORT, InsecureChannelCredentials.create()).build();
         ClientCall<byte[], byte[]> call = channel.newCall(method, CallOptions.DEFAULT);
 
         byte[] imageBytes = Files.readAllBytes(Paths.get(imagePath));

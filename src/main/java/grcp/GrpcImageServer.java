@@ -47,7 +47,7 @@ public class GrpcImageServer {
                 })
                 .build();
 
-        Server server = Grpc.newServerBuilderForPort(6000, InsecureServerCredentials.create())
+        Server server = Grpc.newServerBuilderForPort(GrcpImageConfig.PORT, InsecureServerCredentials.create())
                 .addService(service)
                 .build()
                 .start();

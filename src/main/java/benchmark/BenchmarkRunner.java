@@ -2,7 +2,6 @@
 package benchmark;
 
 import grcp.GrpcImageClient;
-import rudp.RudpConfig;
 import rudp.RudpSender;
 import tcp.TcpImageClient;
 import udp.UdpImageClient;
@@ -15,6 +14,8 @@ public class BenchmarkRunner {
 
     public static void main(String[] args) throws Exception {
         String imagePath = "test-image.jpg"; // Place this image in the root of the project
+
+        startServers();
 
         System.out.println("Running benchmarks...");
 
@@ -52,6 +53,44 @@ public class BenchmarkRunner {
         System.out.printf("| TOTAL | %8d | %8d | %8d | %8d |%n", tcpTotal, grpcTotal, udpTotal, urdpTotal);
         System.out.printf("| AVG   | %8.2f | %8.2f | %8.2f | %8.2f |%n", tcpAvg, grpcAvg, udpAvg, urdpAvg);
         System.out.println("+-------+----------+----------+----------+----------+");
+    }
+
+    private static void startServers() {
+        // Start TCP server
+        new Thread(() -> {
+            try {
+                tcp.TcpImageServer.main(new String[]{});
+            } catch (Exception e) {
+                System.err.println("TCP Server error: " + e.getMessage());
+            }
+        }).start();
+
+        // Start gRPC server
+        new Thread(() -> {
+            try {
+                grcp.GrpcImageServer.main(new String[]{});
+            } catch (Exception e) {
+                System.err.println("gRPC Server error: " + e.getMessage());
+            }
+        }).start();
+
+        // Start UDP server
+        new Thread(() -> {
+            try {
+                udp.UdpImageServer.main(new String[]{});
+            } catch (Exception e) {
+                System.err.println("UDP Server error: " + e.getMessage());
+            }
+        }).start();
+
+        // Start RUDP server
+        new Thread(() -> {
+            try {
+                rudp.RudpReceiver.main(new String[]{});
+            } catch (Exception e) {
+                System.err.println("RUDP Server error: " + e.getMessage());
+            }
+        }).start();
     }
 
     private static List<Long> runBenchmark(String protocol, BenchmarkTask task) throws Exception {
