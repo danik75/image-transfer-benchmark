@@ -39,3 +39,4 @@ build/
 /grpc_received_image.jpg
 /rudp_received_image.jpg
 /tcp_received_image.jpg
+/udp_received_image.jpg

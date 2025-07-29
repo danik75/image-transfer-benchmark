@@ -42,7 +42,7 @@ public class UdpImageServer {
                 if (chunks.size() == totalChunks) {
                     System.out.println("✅ Received all " + totalChunks + " chunks. Reassembling image...");
 
-                    try (FileOutputStream fos = new FileOutputStream("rudp_received_image.jpg")) {
+                    try (FileOutputStream fos = new FileOutputStream("udp_received_image.jpg")) {
                         for (byte[] part : chunks.values()) {
                             fos.write(part);
                         }
