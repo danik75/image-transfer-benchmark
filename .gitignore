@@ -36,3 +36,6 @@ build/
 
 ### Mac OS ###
 .DS_Store
+/grpc_received_image.jpg
+/rudp_received_image.jpg
+/tcp_received_image.jpg
