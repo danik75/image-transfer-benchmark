@@ -2,13 +2,13 @@
 package benchmark;
 
 import grcp.GrpcImageClient;
+import rudp.RudpConfig;
+import rudp.RudpSender;
 import tcp.TcpImageClient;
 import udp.UdpImageClient;
-import rrdp.UdpReliableImageClient;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class BenchmarkRunner {
     private static final int RUNS = 10;
@@ -21,7 +21,7 @@ public class BenchmarkRunner {
         List<Long> tcpTimes = runBenchmark("TCP", () -> TcpImageClient.send(imagePath));
         List<Long> grpcTimes = runBenchmark("gRPC", () -> GrpcImageClient.send(imagePath));
         List<Long> udpTimes = runBenchmark("UDP", () -> UdpImageClient.send(imagePath));
-        List<Long> rudpTimes = runBenchmark("RUDP", () -> UdpReliableImageClient.send(imagePath));
+        List<Long> rudpTimes = runBenchmark("RUDP", () -> new RudpSender().send(imagePath));
 
         long tcpTotal = tcpTimes.stream().mapToLong(Long::longValue).sum();
         long grpcTotal = grpcTimes.stream().mapToLong(Long::longValue).sum();
