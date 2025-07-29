@@ -2,15 +2,19 @@
 package benchmark;
 
 import grcp.GrpcImageClient;
+import grcp.GrpcImageServer;
+import rudp.RudpReceiver;
 import rudp.RudpSender;
 import tcp.TcpImageClient;
+import tcp.TcpImageServer;
 import udp.UdpImageClient;
+import udp.UdpImageServer;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class BenchmarkRunner {
-    private static final int RUNS = 10;
+    private static final int RUNS = 100;
 
     public static void main(String[] args) throws Exception {
         String imagePath = "test-image.jpg"; // Place this image in the root of the project
@@ -57,40 +61,48 @@ public class BenchmarkRunner {
 
     private static void startServers() {
         // Start TCP server
-        new Thread(() -> {
+        Thread tcpThread = new Thread(() -> {
             try {
-                tcp.TcpImageServer.main(new String[]{});
+                TcpImageServer.main(new String[]{});
             } catch (Exception e) {
                 System.err.println("TCP Server error: " + e.getMessage());
             }
-        }).start();
+        });
+        tcpThread.setDaemon(true); // Mark as daemon
+        tcpThread.start();
 
         // Start gRPC server
-        new Thread(() -> {
+        Thread grpcThread = new Thread(() -> {
             try {
-                grcp.GrpcImageServer.main(new String[]{});
+                GrpcImageServer.main(new String[]{});
             } catch (Exception e) {
                 System.err.println("gRPC Server error: " + e.getMessage());
             }
-        }).start();
+        });
+        grpcThread.setDaemon(true); // Mark as daemon
+        grpcThread.start();
 
         // Start UDP server
-        new Thread(() -> {
+        Thread udpThread = new Thread(() -> {
             try {
-                udp.UdpImageServer.main(new String[]{});
+                UdpImageServer.main(new String[]{});
             } catch (Exception e) {
                 System.err.println("UDP Server error: " + e.getMessage());
             }
-        }).start();
+        });
+        udpThread.setDaemon(true); // Mark as daemon
+        udpThread.start();
 
         // Start RUDP server
-        new Thread(() -> {
+        Thread rudpThread = new Thread(() -> {
             try {
-                rudp.RudpReceiver.main(new String[]{});
+                RudpReceiver.main(new String[]{});
             } catch (Exception e) {
                 System.err.println("RUDP Server error: " + e.getMessage());
             }
-        }).start();
+        });
+        rudpThread.setDaemon(true); // Mark as daemon
+        rudpThread.start();
     }
 
     private static List<Long> runBenchmark(String protocol, BenchmarkTask task) throws Exception {
