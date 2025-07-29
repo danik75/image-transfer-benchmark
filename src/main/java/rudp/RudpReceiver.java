@@ -33,7 +33,7 @@ public class RudpReceiver {
                 UUID fileId = RudpHeader.getFileId(header);
                 int chunkIndex = RudpHeader.getChunkIndex(header);
                 int totalChunks = RudpHeader.getTotalChunks(header);
-                String filename = RudpHeader.getFilename(header);
+                String filename = "rudp-" + RudpHeader.getFilename(header);
 
                 receivedChunks.putIfAbsent(fileId, new HashMap<>());
                 receivedChunks.get(fileId).put(chunkIndex, payload);
@@ -61,7 +61,7 @@ public class RudpReceiver {
     private void saveFile(UUID fileId) throws IOException {
         Map<Integer, byte[]> chunks = receivedChunks.get(fileId);
         String fileName = fileNames.get(fileId);
-        try (FileOutputStream fos = new FileOutputStream("received_" + fileName)) {
+        try (FileOutputStream fos = new FileOutputStream("rudp_received_image.jpg")) {
             for (int i = 0; i < totalChunksMap.get(fileId); i++) {
                 fos.write(chunks.get(i));
             }

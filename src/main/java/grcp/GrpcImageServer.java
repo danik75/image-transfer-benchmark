@@ -3,6 +3,9 @@ package grcp;
 import common.ByteArrayMarshaller;
 import io.grpc.*;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 public class GrpcImageServer {
     public static void main(String[] args) throws Exception {
         MethodDescriptor<byte[], byte[]> method = MethodDescriptor.<byte[], byte[]>newBuilder()
@@ -28,6 +31,15 @@ public class GrpcImageServer {
                             @Override
                             public void onHalfClose() {
                                 System.out.println("gRPC server received: " + image.length + " bytes");
+
+                                // Save the received file
+                                try (FileOutputStream fos = new FileOutputStream("grpc_received_image.jpg")) {
+                                    fos.write(image);
+                                    System.out.println("💾 Image saved as grpc_received_image.jpg");
+                                } catch (IOException e) {
+                                    System.err.println("Error saving file: " + e.getMessage());
+                                }
+
                                 call.sendHeaders(new Metadata());
                                 call.sendMessage("OK".getBytes());
                                 call.close(Status.OK, new Metadata());

@@ -28,7 +28,7 @@ public class TcpImageServer {
                     System.out.println("Received " + buffer.size() + " bytes from client.");
 
                     // Optionally save the image:
-                    try (FileOutputStream fos = new FileOutputStream("tcp_received_image.jpg")) {
+                    try (FileOutputStream fos = new FileOutputStream("tcp_received_image")) {
                         fos.write(buffer.toByteArray());
                     }
 
