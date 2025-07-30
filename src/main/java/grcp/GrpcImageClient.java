@@ -62,7 +62,6 @@ public class GrpcImageClient {
         }
 
         long duration = System.nanoTime() - start;
-//        System.out.println("gRPC response: " + new String(responseHolder[0]));
         return duration / 1_000_000;
     }
 }
